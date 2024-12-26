@@ -1,0 +1,38 @@
+{% extends '_base.html' %}
+
+{% block body %}
+    <style>
+        body{
+            background-color: #666666;
+        }
+    </style>
+
+    <div class="container mt-5">
+        <h2 class="text-white">نتیجه جستجو</h2>
+        {% if query %}
+            <p class="text-white">نتیجه برای"{{ query }}":</p>
+            {% if items %}
+                <div class="row">
+                    {% for item in items %}
+                        <div class="col-md-4 mb-4">
+                            <div class="card">
+
+                                <img src="{{ item.image.url }}" class="card-img-top" alt="{{ item.title }}"
+                                     style="max-height: 200px; object-fit: cover;">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ item.title }}</h5>
+                                    <p class="card-text text-muted">{{ item.description|truncatewords:10 }}</p>
+                                    <p class="text-success">${{ item.price_per_day }} هر روز</p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>هیچ محصولی مطابق با سرچ شما پیدا نشد</p>
+            {% endif %}
+        {% else %}
+            <p>Please enter a search term.</p>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends '_base.html' %}
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'product/product.css' %}">
+{% endblock %}
+{% block body %}
+
+    <div class="mt-5">
+        <h1 class="mb-4 text-white">محصولات</h1>
+
+
+        <div class="mb-4">
+            <form method="get" class="d-flex">
+                <select name="category" class="form-select me-2">
+                    <option value="">همه محصولات</option>
+                    {% for category in categories %}
+                        <option value="{{ category.id }}"
+                                {% if category.id|stringformat:"s" == selected_category %}selected{% endif %}>
+                            {{ category.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+                <button class="btn btn-primary">فیلتر</button>
+            </form>
+        </div>
+
+
+        <div class="row">
+
+            {% for item in items %}
+                <div class="col-12 col-sm-6 col-md-4 mb-4">
+                    <div class="card">
+                        <img src="{{ item.image.url }}" class="card-img-top" alt="{{ item.title }}"
+                             style="height: 200px; object-fit: cover;">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ item.title }}</h5>
+                            <p class="card-text text-muted">{{ item.description|truncatewords:15 }}</p>
+                            <p class="text-success">${{ item.price_per_day }} / روز </p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- در صورتی که هیچ محصولی وجود نداشته باشد -->
+
+    </div>
+{% endblock %}
