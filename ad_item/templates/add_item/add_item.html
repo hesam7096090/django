@@ -5,59 +5,60 @@
 {% endblock %}
 {% block body %}
 
-    {% csrf_token %}
-  <form method="post" enctype="multipart/form-data">
-    <section class="  vh-100 gradient-custom">
-        <div class="py-5 h-100">
-            <div class="row d-flex justify-content-center align-items-center h-100">
-                <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-                    <div class="card bg-dark text-white" style="border-radius: 1rem;">
-                        <div class="card-body p-5 text-center">
-                            <div class="mb-md-5 mt-md-4 pb-5">
-                                <h2 class="fw-bold mb-2 text-uppercase">ثبت محصول</h2>
-                                <p class="text-white-50 mb-5">اطلاعات محصولتان را جهت اجاره دادن ثبت کنید</p>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <section class="  vh-100 gradient-custom">
+            <div class="py-5 h-100">
+                <div class="row d-flex justify-content-center align-items-center h-100">
+                    <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                        <div class="card bg-dark text-white" style="border-radius: 1rem;">
+                            <div class="card-body p-5 text-center">
+                                <div class="mb-md-5 mt-md-4 pb-5">
+                                    <h2 class="fw-bold mb-2 text-uppercase">ثبت محصول</h2>
+                                    <p class="text-white-50 mb-5">اطلاعات محصولتان را جهت اجاره دادن ثبت کنید</p>
 
-                                <div class="form-outline form-white mb-4">
-                                    <label class="form-label" for="typeTitle">اسم محصول </label>
-                                    <input type="text" name="title" id="typeTitle"
-                                           class="form-control form-control-lg" required />
+                                    <div class="form-outline form-white mb-4">
+                                        <label class="form-label" for="typeTitle">اسم محصول </label>
+                                        <input type="text" name="title" id="typeTitle"
+                                               class="form-control form-control-lg" required/>
+                                    </div>
+
+                                    <div class="form-outline form-white mb-4">
+                                        <label class="form-label" for="typeDescription">توضیحات</label>
+                                        <textarea name="description" id="typeDescription" cols="30" rows="5"
+                                                  class="form-control" required></textarea>
+                                    </div>
+
+                                    <div class="form-outline form-white mb-4">
+                                        <label class="form-label" for="typePrice">هزینه برای هر روز اجاره</label>
+                                        <input type="number" name="price_per_day" id="typePrice"
+                                               class="form-control form-control-lg" required/>
+                                    </div>
+
+                                    <div class="form-outline form-white mb-4">
+                                        <label class="form-label" for="id_category">دسته‌بندی</label>
+                                        <select name="category" class="form-control" id="id_category" required>
+                                            {% for category in categories %}
+                                                <option value="{{ category.id }}">{{ category.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+
+                                    <div class="form-outline form-white mb-4">
+                                        <label class="form-label" for="typeImage">عکس</label>
+                                        <input type="file" required name="image" id="typeImage"
+                                               class="form-control form-control-lg"/>
+                                    </div>
+
+                                    <button class="btn btn-outline-light btn-lg px-5" type="submit">ثبت محصول</button>
                                 </div>
-
-                                <div class="form-outline form-white mb-4">
-                                    <label class="form-label" for="typeDescription">توضیحات</label>
-                                    <textarea  name="description" id="typeDescription" cols="30" rows="5" class="form-control" required></textarea>
-                                </div>
-
-                                <div class="form-outline form-white mb-4">
-                                    <label class="form-label" for="typePrice">هزینه برای هر روز اجاره</label>
-                                    <input type="number" name="price_per_day" id="typePrice"
-                                           class="form-control form-control-lg" required />
-                                </div>
-
-                                <div class="form-outline form-white mb-4">
-                                    <label class="form-label" for="id_category">دسته‌بندی</label>
-                                    <select name="category" class="form-control" id="id_category" required>
-                                        {% for category in categories %}
-                                            <option value="{{ category.id }}">{{ category.name }}</option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
-
-                                <div class="form-outline form-white mb-4">
-                                    <label class="form-label" for="typeImage">عکس</label>
-                                    <input type="file" required name="image" id="typeImage"
-                                           class="form-control form-control-lg" />
-                                </div>
-
-                                <button class="btn btn-outline-light btn-lg px-5" type="submit">ثبت محصول</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-</form>
+        </section>
+    </form>
 
 
 {% endblock %}

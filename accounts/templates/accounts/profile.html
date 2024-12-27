@@ -1,25 +1,43 @@
 {% extends '_base.html' %}
+{% load static %}
+
+
+
 {% block body %}
-    <table>
-        <tr>
-            <th>نام کاربری : {{ profile.user.username }}</th>
-        </tr>
-        <tr>
-            <th>نام : {{ profile.user.first_name }}</th>
-        </tr>
-        <tr>
-            <th>نام خانوادگی : {{ profile.user.last_name }}</th>
-        </tr>
-        <tr>
-            <th>پست الکترونیکی : {{ profile.user.email }}</th>
-        </tr>
-        <tr>
-            <th>تلفن : {{ profile.phone }}</th>
-        </tr>
-        <tr>
-            <th>آدرس : {{ profile.address }}</th>
-        </tr>
-    </table>
-    <a href="{% url 'accounts:update' %}" class="btn btn-warning">Update</a>
-    <a href="{% url 'accounts:change' %}" class="btn btn-danger">Change Password</a>
+    <div class="container mt-5">
+        <h1>پروفایل کاربری</h1>
+        <div class="row">
+            <div class="col-md-4">
+                <p>نام: {{ request.user.first_name }}</p>
+                <p>نام خانوادگی: {{ request.user.last_name }}</p>
+                <p>ایمیل: {{ request.user.email }}</p>
+                <p>شماره تلفن: {{ profile.phone_number }}</p>
+            </div>
+            <div class="col-md-8">
+                <h3>ویرایش اطلاعات</h3>
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ user_form.as_p }}
+                    {{ profile_form.as_p }}
+                    <button type="submit" class="btn btn-primary">ذخیره تغییرات</button>
+                </form>
+            </div>
+        </div>
+        <hr>
+        <h3>محصولات ثبت‌شده شما</h3>
+        <div class="row">
+            {% for item in items %}
+                <div class="col-md-4">
+                    <div class="card">
+                        <img src="{{ item.image.url }}" class="card-img-top" alt="{{ item.title }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ item.title }}</h5>
+                            <p class="card-text">{{ item.description }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
 {% endblock %}

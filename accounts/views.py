@@ -7,6 +7,8 @@ from django.contrib import messages
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import  update_session_auth_hash
 from django.contrib.auth.decorators import login_required
+from .forms import UserEditForm, ProfileEditForm
+from ad_item.models import Item
 # Create your views here.
 
 def user_register(request):
@@ -52,10 +54,6 @@ def user_logout(request) :
     messages.success(request , 'به امید دیدار', 'warning')
     return redirect('home:home')
 
-@login_required(login_url='accounts:login')
-def user_profile(request):
-    profile = Profile.objects.get(user_id = request.user.id)
-    return render(request , 'accounts/profile.html',{'profile':profile})
 
 
 
@@ -63,15 +61,15 @@ def user_profile(request):
 @login_required(login_url='accounts:login')
 def user_update(request):
     if request.method == 'POST':
-        user_form = UserUpdateForm(request.POST,instance=request.user)
-        profile_form = ProfileUpdateForm(request.POST,instance=request.user.profile)
+        user_form = UserEditForm(request.POST,instance=request.user)
+        profile_form = ProfileEditForm(request.POST,instance=request.user.profile)
         if user_form and profile_form.is_valid() :
             user_form.save()
             profile_form.save()
             return redirect('accounts:profile')
     else :
-        user_form = UserUpdateForm(instance=request.user)
-        profile_form = ProfileUpdateForm(instance=request.user.profile)
+        user_form = UserEditForm(instance=request.user)
+        profile_form = ProfileEditForm(instance=request.user.profile)
     return render(request , 'accounts/update.html',
                   {'user_form':user_form , 'profile_form':profile_form})
 
@@ -86,3 +84,31 @@ def change_password(request) :
     else :
         form = PasswordChangeForm(request.user)
     return render(request , 'accounts/change.html',{'form':form})
+
+
+
+
+@login_required
+def profile(request):
+    user = request.user
+    profile, created = Profile.objects.get_or_create(user=user)
+
+    if request.method == 'POST':
+        user_form = UserEditForm(request.POST, instance=user)
+        profile_form = ProfileEditForm(request.POST, request.FILES, instance=profile)
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            return redirect('accounts:profile')
+    else:
+        user_form = UserEditForm(instance=user)
+        profile_form = ProfileEditForm(instance=profile)
+
+    # آیتم‌های ثبت‌شده توسط کاربر
+    items = Item.objects.filter(owner=user)
+
+    return render(request, 'accounts/profile.html', {
+        'user_form': user_form,
+        'profile_form': profile_form,
+        'items': items,
+    })

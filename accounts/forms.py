@@ -1,7 +1,8 @@
 from django import forms
 from django.contrib.auth.models import User
 from .models import *
-
+from django import forms
+from django.contrib.auth.models import User
 error = {
     'min_length' : 'حداکثر می بایست 5 کاراکتر باشد' ,
     'required' : 'این فیلد الزامی است',
@@ -48,12 +49,13 @@ class UserLoginForm(forms.Form) :
 
 
 
-class UserUpdateForm(forms.ModelForm):
+
+class UserEditForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['email' , 'first_name' , 'last_name']
+        fields = ['first_name', 'last_name', 'email']
 
-class ProfileUpdateForm(forms.ModelForm):
+class ProfileEditForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['phone' , 'address']
+        fields = ['profile_image', 'phone_number']
