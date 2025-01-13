@@ -1,13 +1,12 @@
 {% extends '_base.html' %}
 {% load static %}
 {% block css %}
-    <link rel="stylesheet" href="{% static 'product/product.css' %}">
+    <link rel="stylesheet" href="{% static 'product/product4.css' %}">
 {% endblock %}
 {% block body %}
 
-    <div class="mt-5">
+    <div class="container mt-5">
         <h1 class="mb-4 text-white">محصولات</h1>
-
 
         <div class="mb-4">
             <form method="get" class="d-flex">
@@ -24,11 +23,9 @@
             </form>
         </div>
 
-
         <div class="row">
-
             {% for item in items %}
-                <div class="col-12 col-sm-6 col-md-4 mb-4">
+                <div class="col-12 col-md-6 col-lg-4 items mb-4">
                     <div class="card">
                         <img src="{{ item.image.url }}" class="card-img-top" alt="{{ item.title }}"
                              style="height: 200px; object-fit: cover;">
@@ -42,7 +39,11 @@
             {% endfor %}
         </div>
 
-        <!-- در صورتی که هیچ محصولی وجود نداشته باشد -->
-
+        {% if not items %}
+            <div class="alert alert-warning text-center">
+                محصولی برای نمایش وجود ندارد.
+            </div>
+        {% endif %}
     </div>
+
 {% endblock %}
