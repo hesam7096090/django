@@ -8,7 +8,7 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import  update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from .forms import UserEditForm, ProfileEditForm
-from ad_item.models import Item
+from ad_item.models import *
 # Create your views here.
 
 def user_register(request):

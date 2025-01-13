@@ -4,61 +4,268 @@
     <link rel="stylesheet" href="{% static 'ad-item/additem1.css' %}">
 {% endblock %}
 {% block body %}
+    <style>
 
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <section class="  vh-100 gradient-custom">
-            <div class="py-5 h-100">
-                <div class="row d-flex justify-content-center align-items-center h-100">
-                    <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-                        <div class="card bg-dark text-white" style="border-radius: 1rem;">
-                            <div class="card-body p-5 text-center">
-                                <div class="mb-md-5 mt-md-4 pb-5">
-                                    <h2 class="fw-bold mb-2 text-uppercase">ثبت محصول</h2>
-                                    <p class="text-white-50 mb-5">اطلاعات محصولتان را جهت اجاره دادن ثبت کنید</p>
+    </style>
+    <div class="container mt-5 text-white">
+        <h2 class="mb-4"> ثبت محصول</h2>
+        <form method="POST" enctype="multipart/form-data" id="productForm">
+            {% csrf_token %}
 
-                                    <div class="form-outline form-white mb-4">
-                                        <label class="form-label" for="typeTitle">اسم محصول </label>
-                                        <input type="text" name="title" id="typeTitle"
-                                               class="form-control form-control-lg" required/>
-                                    </div>
+            <!-- Nav Tabs -->
+            <ul class="nav nav-tabs mb-4" id="productTabs" role="tablist">
+                <li class="nav-item">
+                    <button class="nav-link active" id="general-tab" data-bs-toggle="tab" data-bs-target="#general"
+                            type="button" role="tab" aria-controls="general" aria-selected="true">
+                        مشخصات
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="images-tab" data-bs-toggle="tab" data-bs-target="#images" type="button"
+                            role="tab" aria-controls="images" aria-selected="false">
+                        تصاویر
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="location-tab" data-bs-toggle="tab" data-bs-target="#location"
+                            type="button" role="tab" aria-controls="location" aria-selected="false">
+                        موقعیت مکانی
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="collateral-tab" data-bs-toggle="tab" data-bs-target="#collateral"
+                            type="button" role="tab" aria-controls="collateral" aria-selected="false">
+                        وثیقه
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="pricing-tab" data-bs-toggle="tab" data-bs-target="#pricing"
+                            type="button" role="tab" aria-controls="pricing" aria-selected="false">
+                        هزینه اجاره
+                    </button>
+                </li>
+            </ul>
 
-                                    <div class="form-outline form-white mb-4">
-                                        <label class="form-label" for="typeDescription">توضیحات</label>
-                                        <textarea name="description" id="typeDescription" cols="30" rows="5"
-                                                  class="form-control" required></textarea>
-                                    </div>
+            <!-- Tab Content -->
+            <div class="tab-content" id="productTabsContent">
+                <!-- اطلاعات عمومی -->
+                <div class="tab-pane fade show active" id="general" role="tabpanel" aria-labelledby="general-tab">
+                    <div class="form-group mb-3">
+                        {{ form.category.label }}<br>
+                        {{ form.category }}
+                    </div>
+                    <div class="form-group mb-3">
+                        {{ form.title.label }}<br>
+                        {{ form.title }}
+                    </div>
+                    <div class="form-group mb-3">
+                        {{ form.description.label }}<br>
+                        {{ form.description }}
+                    </div>
+                    <div class="form-group mb-3">
+                        {{ form.quantity_available.label }}<br>
+                        {{ form.quantity_available }}
+                    </div>
+                    <button type="button" class="btn btn-primary next-tab">بعدی</button>
+                </div>
 
-                                    <div class="form-outline form-white mb-4">
-                                        <label class="form-label" for="typePrice">هزینه برای هر روز اجاره</label>
-                                        <input type="number" name="price_per_day" id="typePrice"
-                                               class="form-control form-control-lg" required/>
-                                    </div>
+                <!-- تصاویر -->
+                <div class="tab-pane fade" id="images" role="tabpanel" aria-labelledby="images-tab">
+                    <div class="form-group mb-3">
+                        {{ form.images.label }}<br>
+                        <input type="file" id="imageInput" name="images" multiple class="form-control">
+                    </div>
+                    <div id="imagePreviewContainer" class="d-flex flex-wrap gap-3 mt-3">
+                        <!-- پیش‌نمایش تصاویر اینجا اضافه می‌شود -->
+                    </div>
+                    <button type="button" class="btn btn-secondary prev-tab">برگشت</button>
+                    <button type="button" class="btn btn-primary next-tab">بعدی</button>
+                </div>
 
-                                    <div class="form-outline form-white mb-4">
-                                        <label class="form-label" for="id_category">دسته‌بندی</label>
-                                        <select name="category" class="form-control" id="id_category" required>
-                                            {% for category in categories %}
-                                                <option value="{{ category.id }}">{{ category.name }}</option>
-                                            {% endfor %}
-                                        </select>
-                                    </div>
+                <!-- موقعیت مکانی -->
+                <div class="tab-pane fade" id="location" role="tabpanel" aria-labelledby="location-tab">
+                    <div class="form-group mb-3">
+                        {{ form.province.label }}<br>
+                        {{ form.province }}
+                    </div>
+                    <div class="form-group mb-3">
+                        {{ form.city.label }}<br>
+                        {{ form.city }}
+                    </div>
+                    <div class="form-group mb-3">
+                        {{ form.address.label }}<br>
+                        {{ form.address }}
+                    </div>
+                    <button type="button" class="btn btn-secondary prev-tab">برگشت</button>
+                    <button type="button" class="btn btn-primary next-tab">بعدی</button>
+                </div>
 
-                                    <div class="form-outline form-white mb-4">
-                                        <label class="form-label" for="typeImage">عکس</label>
-                                        <input type="file" required name="image" id="typeImage"
-                                               class="form-control form-control-lg"/>
-                                    </div>
-
-                                    <button class="btn btn-outline-light btn-lg px-5" type="submit">ثبت محصول</button>
-                                </div>
-                            </div>
+                <!-- وثیقه -->
+                <div class="tab-pane fade" id="collateral" role="tabpanel" aria-labelledby="collateral-tab">
+                    <h4>موارد وثیقه</h4>
+                    <div class="form-group mb-3">
+                        <label for="collateral" class="form-label">انتخاب وثیقه‌ها:</label><br>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="کارت ملی" id="collateral-national-id"
+                                   name="collateral">
+                            <label class="form-check-label" for="collateral-national-id">
+                                کارت ملی
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="شناسنامه"
+                                   id="collateral-birth-certificate" name="collateral">
+                            <label class="form-check-label" for="collateral-birth-certificate">
+                                شناسنامه
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="گواهی نامه ماشین"
+                                   id="collateral-car-license" name="collateral">
+                            <label class="form-check-label" for="collateral-car-license">
+                                گواهی نامه ماشین
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="پاسپورت" id="collateral-passport"
+                                   name="collateral">
+                            <label class="form-check-label" for="collateral-passport">
+                                پاسپورت
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="کارت خودرو" id="collateral-car-card"
+                                   name="collateral">
+                            <label class="form-check-label" for="collateral-car-card">
+                                کارت خودرو
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="چک" id="collateral-check"
+                                   name="collateral">
+                            <label class="form-check-label" for="collateral-check">
+                                چک (به مبلغ ارزش کالا)
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="سفته" id="collateral-promissory-note"
+                                   name="collateral">
+                            <label class="form-check-label" for="collateral-promissory-note">
+                                سفته (به مبلغ ارزش کالا)
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="سند ملک"
+                                   id="collateral-property-deed" name="collateral">
+                            <label class="form-check-label" for="collateral-property-deed">
+                                سند ملک
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="سند وسیله نقلیه"
+                                   id="collateral-vehicle-deed" name="collateral">
+                            <label class="form-check-label" for="collateral-vehicle-deed">
+                                سند وسیله نقلیه
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="گواهی نامه موتور"
+                                   id="collateral-motorcycle-license" name="collateral">
+                            <label class="form-check-label" for="collateral-motorcycle-license">
+                                گواهی نامه موتور
+                            </label>
                         </div>
                     </div>
+                    <button type="button" class="btn btn-secondary prev-tab">برگشت</button>
+                    <button type="button" class="btn btn-primary next-tab">بعدی</button>
+                </div>
+
+                <!-- هزینه اجاره -->
+                <div class="tab-pane fade" id="pricing" role="tabpanel" aria-labelledby="pricing-tab">
+                    <div class="form-group mb-3">
+                        {{ form.price_per_day.label }}<br>
+                        {{ form.price_per_day }}
+                    </div>
+                    <button type="button" class="btn btn-secondary prev-tab">برگشت</button>
+                    <button type="submit" class="btn btn-success">ثبت محصول</button>
                 </div>
             </div>
-        </section>
-    </form>
+        </form>
+    </div>
 
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const tabs = document.querySelectorAll('#productTabs button');
+            const nextButtons = document.querySelectorAll('.next-tab');
+            const prevButtons = document.querySelectorAll('.prev-tab');
+
+            nextButtons.forEach((btn, index) => {
+                btn.addEventListener('click', () => {
+                    tabs[index + 1].click();
+                });
+            });
+
+            prevButtons.forEach((btn, index) => {
+                btn.addEventListener('click', () => {
+                    tabs[index].click();
+                });
+            });
+        });
+        document.addEventListener('DOMContentLoaded', function () {
+            const imageInput = document.getElementById('imageInput');
+            const imagePreviewContainer = document.getElementById('imagePreviewContainer');
+
+            imageInput.addEventListener('change', function () {
+                // پاک کردن پیش‌نمایش‌های قبلی
+                imagePreviewContainer.innerHTML = '';
+
+                // خواندن فایل‌های انتخاب‌شده
+                const files = Array.from(this.files);
+                files.forEach((file, index) => {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        // ساخت کارت پیش‌نمایش
+                        const imageCard = document.createElement('div');
+                        imageCard.classList.add('card', 'p-2');
+                        imageCard.style.width = '150px';
+                        imageCard.style.position = 'relative';
+
+                        // پیش‌نمایش تصویر
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.alt = file.name;
+                        img.classList.add('card-img-top');
+                        img.style.height = '100px';
+                        img.style.objectFit = 'cover';
+
+                        // دکمه حذف
+                        const removeButton = document.createElement('button');
+                        removeButton.classList.add('btn', 'btn-danger', 'btn-sm');
+                        removeButton.style.position = 'absolute';
+                        removeButton.style.top = '5px';
+                        removeButton.style.right = '5px';
+                        removeButton.innerText = 'حذف';
+                        removeButton.addEventListener('click', function () {
+                            files.splice(index, 1);
+                            imageCard.remove();
+
+                            // به‌روزرسانی فایل‌های ورودی
+                            const dataTransfer = new DataTransfer();
+                            files.forEach(file => dataTransfer.items.add(file));
+                            imageInput.files = dataTransfer.files;
+                        });
+
+                        // اضافه کردن به کارت
+                        imageCard.appendChild(img);
+                        imageCard.appendChild(removeButton);
+                        imagePreviewContainer.appendChild(imageCard);
+                    };
+
+                    // خواندن فایل
+                    reader.readAsDataURL(file);
+                });
+            });
+        });
+    </script>
 {% endblock %}
