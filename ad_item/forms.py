@@ -19,7 +19,9 @@ class ItemForm(forms.ModelForm):
             'category', 'title', 'description', 'quantity_available',
             'province', 'city', 'address', 'collateral_required',
             'collateral_types', 'price_per_day',
-            'item_value'
+            'item_value',
+            'image',
+
         ]
         widgets = {
             'category': forms.Select(attrs={'class': 'form-control'}),
@@ -32,6 +34,7 @@ class ItemForm(forms.ModelForm):
             'collateral_required': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
             'price_per_day': forms.NumberInput(attrs={'class': 'form-control'}),
             'item_value': forms.NumberInput(attrs={'class': 'form-control'}),
+            'image': forms.FileInput(attrs={'class': 'form-control'}),
         }
 
 
