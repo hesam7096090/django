@@ -38,7 +38,9 @@ class Item(models.Model):
         return self.title
 
 
-
+class ProductImage(models.Model):
+    product = models.ForeignKey(Item, on_delete=models.CASCADE, related_name='images')
+    image = models.ImageField(upload_to='product_images/')
 
 
 class Collateral(models.Model):

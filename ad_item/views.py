@@ -3,7 +3,7 @@ from django.shortcuts import render
 # Create your views here.
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .forms import ItemForm
+from .forms import *
 
 
 from .models import *
@@ -19,6 +19,9 @@ def add_item(request):
             product = form.save(commit=False)
             product.save()
             form.save_m2m()  # ذخیره ManyToMany
+            images = request.FILES.getlist('images')
+            for image in images:
+                ProductImage.objects.create(product=product, image=image)
             return redirect('home:home')
     else:
         form = ItemForm()

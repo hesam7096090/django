@@ -4,11 +4,12 @@
     <link rel="stylesheet" href="{% static 'product/product4.css' %}">
 {% endblock %}
 {% block body %}
-<div id="loading" style="display: flex; align-items: center; justify-content: center; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(255, 255, 255, 0.8); z-index: 9999;">
-    <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">در حال بارگذاری...</span>
+    <div id="loading"
+         style="display: flex; align-items: center; justify-content: center; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(255, 255, 255, 0.8); z-index: 9999;">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">در حال بارگذاری...</span>
+        </div>
     </div>
-</div>
     <div class="container mt-5">
         <h1 class="mb-4 text-white">محصولات</h1>
 
@@ -31,13 +32,16 @@
             {% for item in items %}
                 <div class="col-12 col-md-6 col-lg-4 items mb-4">
                     <div class="card">
-                        <img src="{{ item.image.url }}" class="card-img-top" alt="{{ item.title }}"
-                             style="height: 200px; object-fit: cover;">
+                      {% if item.images.all %}
+                        <img src="{{ item.images.first.image.url }}" class="card-img-top" alt="{{ item.title }}" style="max-height: 200px; object-fit: cover;">
+                    {% else %}
+                    {% endif %}
                         <div class="card-body">
                             <h5 class="card-title">{{ item.title }}</h5>
                             <p class="card-text text-muted">{{ item.description|truncatewords:15 }}</p>
                             <p class="text-success">${{ item.price_per_day }} / روز </p>
                             <p class="text-success">${{ item.created_at }}  </p>
+                            <a href="{% url 'product:product_detail' item.id %}" class="btn btn-primary">جزعیات</a>
 
                         </div>
                     </div>
@@ -51,14 +55,14 @@
             </div>
         {% endif %}
     </div>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const loading = document.getElementById("loading");
-        const content = document.getElementById("content");
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const loading = document.getElementById("loading");
+            const content = document.getElementById("content");
 
-        loading.style.display = "none";
-        content.style.display = "block";
-    });
-</script>
+            loading.style.display = "none";
+            content.style.display = "block";
+        });
+    </script>
 
 {% endblock %}
