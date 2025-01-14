@@ -76,8 +76,8 @@
                         <input type="file" id="imageInput" name="image" multiple class="form-control">
                     </div>
                     <div id="imagePreviewContainer" class="d-flex flex-wrap gap-3 mt-3">
-                        <!-- پیش‌نمایش تصاویر اینجا اضافه می‌شود -->
                     </div>
+                    <br>
                     <button type="button" class="btn btn-secondary prev-tab">برگشت</button>
                     <button type="button" class="btn btn-primary next-tab">بعدی</button>
                 </div>
@@ -104,8 +104,10 @@
                 <div class="tab-pane fade" id="collateral" role="tabpanel" aria-labelledby="collateral-tab">
                     <h4>موارد وثیقه</h4>
                     <div class="form-check">
-                        {{ form.collateral_required }}
+                        <input type="checkbox" name="collateral_required" class="form-check-input"
+                               id="id_collateral_required">
                         <label class="form-check-label" for="id_collateral_required">آیا وثیقه نیاز است؟</label>
+
                     </div>
                     <div>
                         {% for collateral in form.collateral_types %}
@@ -123,8 +125,10 @@
                 <!-- هزینه اجاره -->
                 <div class="tab-pane fade" id="pricing" role="tabpanel" aria-labelledby="pricing-tab">
                     <div class="form-group mb-3">
-                        {{ form.price_per_day.label }}<br>
+                        قیمت برای هر یک روز
                         {{ form.price_per_day }}
+                        <br>
+                         کل ارزش محصول
                         {{ form.item_value }}
                     </div>
                     <button type="button" class="btn btn-secondary prev-tab">برگشت</button>
@@ -191,19 +195,16 @@
                             files.splice(index, 1);
                             imageCard.remove();
 
-                            // به‌روزرسانی فایل‌های ورودی
                             const dataTransfer = new DataTransfer();
                             files.forEach(file => dataTransfer.items.add(file));
                             imageInput.files = dataTransfer.files;
                         });
 
-                        // اضافه کردن به کارت
                         imageCard.appendChild(img);
                         imageCard.appendChild(removeButton);
                         imagePreviewContainer.appendChild(imageCard);
                     };
 
-                    // خواندن فایل
                     reader.readAsDataURL(file);
                 });
             });

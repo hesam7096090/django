@@ -4,7 +4,11 @@
     <link rel="stylesheet" href="{% static 'product/product4.css' %}">
 {% endblock %}
 {% block body %}
-
+<div id="loading" style="display: flex; align-items: center; justify-content: center; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(255, 255, 255, 0.8); z-index: 9999;">
+    <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">در حال بارگذاری...</span>
+    </div>
+</div>
     <div class="container mt-5">
         <h1 class="mb-4 text-white">محصولات</h1>
 
@@ -47,5 +51,14 @@
             </div>
         {% endif %}
     </div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const loading = document.getElementById("loading");
+        const content = document.getElementById("content");
+
+        loading.style.display = "none";
+        content.style.display = "block";
+    });
+</script>
 
 {% endblock %}
