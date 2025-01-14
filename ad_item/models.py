@@ -1,3 +1,5 @@
+from datetime import timezone
+
 from django.db import models
 
 # Create your models here.
@@ -25,6 +27,7 @@ class Item(models.Model):
     price_per_day = models.DecimalField(max_digits=10, decimal_places=2)
     province = models.CharField(max_length=100)
     city = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True , null=True , blank=True)
     address = models.TextField()
     collateral_required = models.BooleanField(default=False)
     collateral_types = models.ManyToManyField('Collateral', blank=True)

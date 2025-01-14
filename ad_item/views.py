@@ -23,5 +23,6 @@ def add_item(request):
     else:
         form = ItemForm()
 
+
     collaterals = Collateral.objects.all()  # دریافت موارد وثیقه از دیتابیس
     return render(request, 'add_item/add_item.html', {'form': form, 'collaterals': collaterals})
