@@ -8,21 +8,20 @@ from .forms import ItemForm
 
 from .models import *
 
-from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import *
 
 @login_required
 def add_item(request):
     if request.method == 'POST':
-        collateral = request.POST.getlist('collateral')
-        form = ItemForm(request.POST)
-        files = request.FILES.getlist('images')
+        form = ItemForm(request.POST, request.FILES)
         if form.is_valid():
-            product = form.save()
-            for file in files:
-                ProductImage.objects.create(product=product, image=file)
-            return redirect('home:home')  # تغییر به URL مناسب
+            product = form.save(commit=False)
+            product.save()
+            form.save_m2m()  # ذخیره ManyToMany
+            return redirect('home:home')
     else:
         form = ItemForm()
-    return render(request, 'add_item/add_item.html', {'form': form})
+
+    collaterals = Collateral.objects.all()  # دریافت موارد وثیقه از دیتابیس
+    return render(request, 'add_item/add_item.html', {'form': form, 'collaterals': collaterals})

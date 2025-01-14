@@ -103,78 +103,18 @@
                 <!-- وثیقه -->
                 <div class="tab-pane fade" id="collateral" role="tabpanel" aria-labelledby="collateral-tab">
                     <h4>موارد وثیقه</h4>
-                    <div class="form-group mb-3">
-                        <label for="collateral" class="form-label">انتخاب وثیقه‌ها:</label><br>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="کارت ملی" id="collateral-national-id"
-                                   name="collateral">
-                            <label class="form-check-label" for="collateral-national-id">
-                                کارت ملی
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="شناسنامه"
-                                   id="collateral-birth-certificate" name="collateral">
-                            <label class="form-check-label" for="collateral-birth-certificate">
-                                شناسنامه
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="گواهی نامه ماشین"
-                                   id="collateral-car-license" name="collateral">
-                            <label class="form-check-label" for="collateral-car-license">
-                                گواهی نامه ماشین
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="پاسپورت" id="collateral-passport"
-                                   name="collateral">
-                            <label class="form-check-label" for="collateral-passport">
-                                پاسپورت
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="کارت خودرو" id="collateral-car-card"
-                                   name="collateral">
-                            <label class="form-check-label" for="collateral-car-card">
-                                کارت خودرو
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="چک" id="collateral-check"
-                                   name="collateral">
-                            <label class="form-check-label" for="collateral-check">
-                                چک (به مبلغ ارزش کالا)
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="سفته" id="collateral-promissory-note"
-                                   name="collateral">
-                            <label class="form-check-label" for="collateral-promissory-note">
-                                سفته (به مبلغ ارزش کالا)
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="سند ملک"
-                                   id="collateral-property-deed" name="collateral">
-                            <label class="form-check-label" for="collateral-property-deed">
-                                سند ملک
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="سند وسیله نقلیه"
-                                   id="collateral-vehicle-deed" name="collateral">
-                            <label class="form-check-label" for="collateral-vehicle-deed">
-                                سند وسیله نقلیه
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="گواهی نامه موتور"
-                                   id="collateral-motorcycle-license" name="collateral">
-                            <label class="form-check-label" for="collateral-motorcycle-license">
-                                گواهی نامه موتور
-                            </label>
-                        </div>
+                    <div class="form-check">
+                        {{ form.collateral_required }}
+                        <label class="form-check-label" for="id_collateral_required">آیا وثیقه نیاز است؟</label>
+                    </div>
+                    <div>
+                        {% for collateral in form.collateral_types %}
+                            <div class="form-check">
+                                {{ collateral.tag }}
+                                <label class="form-check-label"
+                                       for="{{ collateral.id }}">{{ collateral.choice_label }}</label>
+                            </div>
+                        {% endfor %}
                     </div>
                     <button type="button" class="btn btn-secondary prev-tab">برگشت</button>
                     <button type="button" class="btn btn-primary next-tab">بعدی</button>
@@ -185,6 +125,7 @@
                     <div class="form-group mb-3">
                         {{ form.price_per_day.label }}<br>
                         {{ form.price_per_day }}
+                        {{ form.item_value }}
                     </div>
                     <button type="button" class="btn btn-secondary prev-tab">برگشت</button>
                     <button type="submit" class="btn btn-success">ثبت محصول</button>
