@@ -29,6 +29,7 @@ class Item(models.Model):
     collateral_required = models.BooleanField(default=False)
     collateral_types = models.ManyToManyField('Collateral', blank=True)
     image = models.ImageField(upload_to='product_images/', null=True, blank=True )
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='items', null=True, blank=True , default=1)  # تغییر به null=True
 
     def __str__(self):
         return self.title
