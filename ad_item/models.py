@@ -31,8 +31,8 @@ class Item(models.Model):
     address = models.TextField()
     collateral_required = models.BooleanField(default=False)
     collateral_types = models.ManyToManyField('Collateral', blank=True)
-    image = models.ImageField(upload_to='product_images/', null=True, blank=True )
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='items', null=True, blank=True , default=1)  # تغییر به null=True
+
 
     def __str__(self):
         return self.title
@@ -40,7 +40,7 @@ class Item(models.Model):
 
 class ProductImage(models.Model):
     product = models.ForeignKey(Item, on_delete=models.CASCADE, related_name='images')
-    image = models.ImageField(upload_to='product_images/')
+    image = models.ImageField(upload_to='product_images/', max_length=200)
 
 
 class Collateral(models.Model):

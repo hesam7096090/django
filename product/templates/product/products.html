@@ -55,7 +55,8 @@
             </div>
         {% endif %}
     </div>
-    <script>
+   {% block js %}
+   	 <script>
         document.addEventListener("DOMContentLoaded", function () {
             const loading = document.getElementById("loading");
             const content = document.getElementById("content");
@@ -64,5 +65,6 @@
             content.style.display = "block";
         });
     </script>
+   {% endblock %}
 
 {% endblock %}

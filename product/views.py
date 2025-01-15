@@ -34,8 +34,8 @@ def product_detail(request, id):
         quantity = int(request.POST.get('quantity', 0))
 
         if start_date and end_date and quantity > 0:
-            start_date = datetime.strptime(start_date, '%Y-%m-%d')
-            end_date = datetime.strptime(end_date, '%Y-%m-%d')
+            start_date = datetime.strptime(start_date, 'YYYY/MM/DD')
+            end_date = datetime.strptime(end_date, 'YYYY/MM/DD')
             days = (end_date - start_date).days
 
             if days > 0:
