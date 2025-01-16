@@ -42,7 +42,11 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'product.apps.ProductConfig',
     'taggit',
+
 ]
+
+
+AUTH_USER_MODEL = 'accounts.CustomUser'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -108,7 +112,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-LANGUAGE_CODE = 'fa'
+LANGUAGE_CODE = 'en'
 TIME_ZONE = 'Asia/Tehran'
 USE_L10N = True
 USE_TZ = True

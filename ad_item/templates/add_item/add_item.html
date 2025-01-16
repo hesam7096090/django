@@ -21,7 +21,8 @@
                     </button>
                 </li>
                 <li class="nav-item">
-                    <button class="nav-link" id="images-tab" data-bs-toggle="tab" data-bs-target="#images" type="button"
+                    <button class="nav-link" id="images-tab" data-bs-toggle="tab" data-bs-target="#images2"
+                            type="button"
                             role="tab" aria-controls="images" aria-selected="false">
                         تصاویر
                     </button>
@@ -70,10 +71,10 @@
                 </div>
 
                 <!-- تصاویر -->
-                <div class="tab-pane fade" id="images" role="tabpanel" aria-labelledby="images-tab">
+                <div class="tab-pane fade" id="images2" role="tabpanel" aria-labelledby="images-tab">
                     <div class="form-group mb-3">
                         {{ form.images.label }}<br>
-                      <input type="file" name="images" id="images" multiple>
+                        <input type="file" name="images" id="images" multiple>
 
                     </div>
                     <div id="imagePreviewContainer" class="d-flex flex-wrap gap-3 mt-3">
@@ -87,12 +88,19 @@
                 <!-- موقعیت مکانی -->
                 <div class="tab-pane fade" id="location" role="tabpanel" aria-labelledby="location-tab">
                     <div class="form-group mb-3">
-                        {{ form.province.label }}<br>
-                        {{ form.province }}
+                        <label for="province">استان:</label>
+                        <select id="province" name="province" class="form-control">
+                            <option value="">لطفاً استان را انتخاب کنید</option>
+                            <!-- استان‌ها به‌صورت پویا بارگذاری می‌شوند -->
+                        </select>
                     </div>
-                    <div class="form-group mb-3">
-                        {{ form.city.label }}<br>
-                        {{ form.city }}
+
+                  <div class="form-group mb-3">
+                        <label for="city">شهر:</label>
+                        <select id="city" name="city" class="form-control" disabled>
+                            <option value="">لطفاً ابتدا استان را انتخاب کنید</option>
+                            <!-- شهرها به‌صورت پویا بارگذاری می‌شوند -->
+                        </select>
                     </div>
                     <div class="form-group mb-3">
                         {{ form.address.label }}<br>
@@ -141,76 +149,7 @@
     </div>
 
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const tabs = document.querySelectorAll('#productTabs button');
-            const nextButtons = document.querySelectorAll('.next-tab');
-            const prevButtons = document.querySelectorAll('.prev-tab');
+    <script src="{% static 'ad-item/aditem.js' %}">
 
-            nextButtons.forEach((btn, index) => {
-                btn.addEventListener('click', () => {
-                    tabs[index + 1].click();
-                });
-            });
-
-            prevButtons.forEach((btn, index) => {
-                btn.addEventListener('click', () => {
-                    tabs[index].click();
-                });
-            });
-        });
-        document.addEventListener('DOMContentLoaded', function () {
-
-            const imageInput = document.getElementById('images');
-            const imagePreviewContainer = document.getElementById('imagePreviewContainer');
-
-            imageInput.addEventListener('change', function () {
-                // پاک کردن پیش‌نمایش‌های قبلی
-                imagePreviewContainer.innerHTML = '';
-
-                // خواندن فایل‌های انتخاب‌شده
-                const files = Array.from(this.files);
-                files.forEach((file, index) => {
-                    const reader = new FileReader();
-                    reader.onload = function (e) {
-                        // ساخت کارت پیش‌نمایش
-                        const imageCard = document.createElement('div');
-                        imageCard.classList.add('card', 'p-2');
-                        imageCard.style.width = '150px';
-                        imageCard.style.position = 'relative';
-
-                        // پیش‌نمایش تصویر
-                        const img = document.createElement('img');
-                        img.src = e.target.result;
-                        img.alt = file.name;
-                        img.classList.add('card-img-top');
-                        img.style.height = '100px';
-                        img.style.objectFit = 'cover';
-
-                        // دکمه حذف
-                        const removeButton = document.createElement('button');
-                        removeButton.classList.add('btn', 'btn-danger', 'btn-sm');
-                        removeButton.style.position = 'absolute';
-                        removeButton.style.top = '5px';
-                        removeButton.style.right = '5px';
-                        removeButton.innerText = 'حذف';
-                        removeButton.addEventListener('click', function () {
-                            files.splice(index, 1);
-                            imageCard.remove();
-
-                            const dataTransfer = new DataTransfer();
-                            files.forEach(file => dataTransfer.items.add(file));
-                            imageInput.files = dataTransfer.files;
-                        });
-
-                        imageCard.appendChild(img);
-                        imageCard.appendChild(removeButton);
-                        imagePreviewContainer.appendChild(imageCard);
-                    };
-
-                    reader.readAsDataURL(file);
-                });
-            });
-        });
     </script>
 {% endblock %}

@@ -32,10 +32,11 @@
             {% for item in items %}
                 <div class="col-12 col-md-6 col-lg-4 items mb-4">
                     <div class="card">
-                      {% if item.images.all %}
-                        <img src="{{ item.images.first.image.url }}" class="card-img-top" alt="{{ item.title }}" style="max-height: 200px; object-fit: cover;">
-                    {% else %}
-                    {% endif %}
+                        {% if item.images.all %}
+                            <img src="{{ item.images.first.image.url }}" class="card-img-top" alt="{{ item.title }}"
+                                 style="max-height: 200px; object-fit: cover;">
+                        {% else %}
+                        {% endif %}
                         <div class="card-body">
                             <h5 class="card-title">{{ item.title }}</h5>
                             <p class="card-text text-muted">{{ item.description|truncatewords:15 }}</p>
@@ -48,15 +49,52 @@
                 </div>
             {% endfor %}
         </div>
-
         {% if not items %}
             <div class="alert alert-warning text-center">
+
                 محصولی برای نمایش وجود ندارد.
             </div>
         {% endif %}
     </div>
-   {% block js %}
-   	 <script>
+    <nav class="mt-4">
+        <ul class="pagination justify-content-center">
+            {% if items.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?q={{ query }}&page=1">&laquo; اولی</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?q={{ query }}&page={{ items.previous_page_number }}">قبلی</a>
+                </li>
+            {% endif %}
+            {% if items.has_next %}
+                <li class="page-item">
+                    <a class="page-link"
+                       href="?q={{ query }}&page={{ items.next_page_number }}">بعدی</a>
+                </li>
+
+            {% endif %}
+            {% for page_num in items.paginator.page_range %}
+                {% if items.number == page_num %}
+                    <li class="page-item active">
+                        <span class="page-link">{{ page_num }}</span>
+                    </li>
+                {% else %}
+                    <li class="page-item">
+                        <a class="page-link"
+                           href="?q={{ query }}&page={{ page_num }}">{{ page_num }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+            {% if items.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?q={{ query }}&page={{ items.paginator.num_pages }}">آخرین
+                        &raquo;</a>
+                </li>
+            {% endif %}
+        </ul>
+
+    </nav>
+    <script>
         document.addEventListener("DOMContentLoaded", function () {
             const loading = document.getElementById("loading");
             const content = document.getElementById("content");
@@ -65,6 +103,6 @@
             content.style.display = "block";
         });
     </script>
-   {% endblock %}
+
 
 {% endblock %}

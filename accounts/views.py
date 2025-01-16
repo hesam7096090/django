@@ -1,117 +1,73 @@
-from django.shortcuts import render , redirect
-from .forms import *
-from .models import *
-from django.contrib.auth.models import User
-from django.contrib.auth import authenticate,login,logout
-from django.contrib import messages
-from django.contrib.auth.forms import PasswordChangeForm
-from django.contrib.auth import  update_session_auth_hash
+
+from django.shortcuts import render, redirect
+from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
-from .forms import UserEditForm, ProfileEditForm
+from django.contrib.auth import  update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib import messages
+from .models import *
 from ad_item.models import *
+from .forms import CustomUserCreationForm, CustomUserChangeForm
+
 # Create your views here.
 
-def user_register(request):
-    if request.method == 'POST' :
-        form = UserRegisterForm(request.POST)
-        if form.is_valid():
-            data = form.cleaned_data
-            user = User.objects.create_user(username = data['user_name']  ,
-                                     email = data['email'] ,
-                                     first_name = data['first_name'] ,
-                                     last_name = data['last_name'] ,
-                                     password=data['password_2'])
-            user.save()
-            messages.success(request , 'ثبت نام شما با موفقیت انجام شد' , 'success')
-            return redirect('home:home')
-    else :
-        form = UserRegisterForm()
-    return  render(request , 'accounts/register.html',{'form':form})
 
 
-def user_login(request):
-    if request.method == 'POST' :
-        form = UserLoginForm(request.POST)
-        if form.is_valid():
-            data = form.cleaned_data
-            try :
-                user = authenticate(request ,
-                                    username = User.objects.get(email = data['user']) ,password = data['password'])
-            except :
-                user = authenticate(request,username = data['user'] ,password = data['password'])
-            if user is not None :
-                login(request,user)
-                messages.success(request , 'خوش آمدید'  ,'info')
-                return redirect('home:home')
-            else :
-                messages.error(request,'نام کاربری یا رمز عبور اشتباه است','danger')
-    else:
-        form = UserLoginForm()
-    return render(request , 'accounts/login.html',{'form':form})
-
-def user_logout(request) :
-    logout(request)
-    messages.success(request , 'به امید دیدار', 'warning')
-    return redirect('home:home')
-
-
-
-
-
-@login_required(login_url='accounts:login')
-def user_update(request):
+def register(request):
     if request.method == 'POST':
-        user_form = UserEditForm(request.POST,instance=request.user)
-        profile_form = ProfileEditForm(request.POST,instance=request.user.profile)
-        if user_form and profile_form.is_valid() :
-            user_form.save()
-            profile_form.save()
-            return redirect('accounts:profile')
-    else :
-        user_form = UserEditForm(instance=request.user)
-        profile_form = ProfileEditForm(instance=request.user.profile)
-    return render(request , 'accounts/update.html',
-                  {'user_form':user_form , 'profile_form':profile_form})
-
-@login_required(login_url='accounts:login')
-def change_password(request) :
-    if request.method == 'POST' :
-        form = PasswordChangeForm(request.user , request.POST)
+        form = CustomUserCreationForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
-            update_session_auth_hash(request,form.user)
-            return redirect('accounts:profile')
-    else :
-        form = PasswordChangeForm(request.user)
-    return render(request , 'accounts/change.html',{'form':form})
+            user = form.save()
+            login(request, user)
+            return redirect('home:home')
+    else:
+        form = CustomUserCreationForm()
+    return render(request, 'accounts/register.html', {'form': form})
 
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('home:home')
+        else:
+            return render(request, 'accounts/login.html', {'error': 'Invalid credentials'})
+    return render(request, 'accounts/login.html')
 
-
-
-
-
+def logout_view(request):
+    logout(request)
+    return redirect('accounts:login')
 
 @login_required
 def profile(request):
-    user = request.user
-    profile, created = Profile.objects.get_or_create(user=user)
+    user_items = Item.objects.filter(owner=request.user)
+    return render(request, 'accounts/profile.html', {'user_items': user_items})
 
+@login_required
+def update_profile(request):
     if request.method == 'POST':
-        user_form = UserEditForm(request.POST, instance=user)
-        profile_form = ProfileEditForm(request.POST, request.FILES, instance=profile)
-        if user_form.is_valid() and profile_form.is_valid():
-            user_form.save()
-            profile_form.save()
+        form = CustomUserChangeForm(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
+            form.save()
             return redirect('accounts:profile')
+        else:
+            messages.error(request, "There was an error updating your profile.")
     else:
-        user_form = UserEditForm(instance=user)
-        profile_form = ProfileEditForm(instance=profile)
-
-    # آیتم‌های ثبت‌شده توسط کاربر
-    items = Item.objects.filter(owner=user)
-
-    return render(request, 'accounts/profile.html', {
-        'user_form': user_form,
-        'profile_form': profile_form,
-        'items': items,
-    })
+        form = CustomUserChangeForm(instance=request.user)
+    return render(request, 'accounts/update.html', {'form': form})
+@login_required
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(user=request.user, data=request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            messages.success(request, "Your password has been updated successfully.")
+            return redirect('accounts:profile')
+        else:
+            messages.error(request, "There was an error updating your password. Please try again.")
+    else:
+        form = PasswordChangeForm(user=request.user)
+    return render(request, 'accounts/change.html', {'form': form})

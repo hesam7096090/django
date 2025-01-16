@@ -1,26 +1,31 @@
-
-
 # Create your views here.
 from django.shortcuts import render
 from ad_item.models import *
+from django.core.paginator import Paginator
+
 
 def product_list(request):
-    category_id = request.GET.get('category')  # دریافت آیدی دسته‌بندی از URL
-    categories = Category.objects.all()  # لیست همه دسته‌بندی‌ها
-    if category_id:
-        items = Item.objects.filter(category_id=category_id)  # فیلتر محصولات بر اساس دسته‌بندی
-    else:
-        items = Item.objects.all()  # نمایش همه محصولات
+    category_id = request.GET.get('category')
+    categories = Category.objects.all()
 
-    return render(request, 'product/products.html', {'items': items, 'categories': categories, 'selected_category': category_id})
+    if category_id:
+        items = Item.objects.filter(category_id=category_id)
+    else:
+        items = Item.objects.all()
+    paginator = Paginator(items, 3)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return render(request, 'product/products.html',
+                  {'items': page_obj, 'categories': categories, 'selected_category': category_id})
 
 
 from django.shortcuts import render, get_object_or_404
 from .models import *
 from datetime import datetime
 
+
 def product_detail(request, id):
-    item = get_object_or_404(Item, id = id)
+    item = get_object_or_404(Item, id=id)
     collateral_type = item.collateral_types.all()
     total_price = None
     days = None
@@ -56,6 +61,3 @@ def product_detail(request, id):
         'error_message': error_message,
         'collateral_type': collateral_type,
     })
-
-
-

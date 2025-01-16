@@ -18,12 +18,14 @@ def home_view(request):
     })
 
 from django.shortcuts import render
-
+from django.core.paginator import Paginator
 def search_results(request):
     query = request.GET.get('q')
     items = Item.objects.filter(title__icontains=query) if query else []
-
-    return render(request, 'home/search_result.html', {'query': query, 'items': items,})
+    paginator = Paginator(items, 3)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return render(request, 'home/search_result.html', {'query': query, 'items': page_obj,})
 
 
 

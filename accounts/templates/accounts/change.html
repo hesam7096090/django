@@ -1,11 +1,24 @@
 {% extends '_base.html' %}
+{% block title %}ویرایش رمز عبور{% endblock %}
 {% block body %}
+<div class="container mt-4">
+    <h2>ویرایش رمز عبور</h2>
+
+    {% if messages %}
+        <div>
+            {% for message in messages %}
+                <div class="alert {{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
     <form method="post">
         {% csrf_token %}
-{#        {{ form.as_p }}#}
-        <input type="password" name="old_password" placeholder="old password...">
-        <input type="password" name="new_password1" placeholder="password...">
-        <input type="password" name="new_password2" placeholder="Confirm password...">
-        <button type="submit">Change</button>
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">ویرایش</button>
+        <a href="{% url 'accounts:profile' %}" class="btn btn-secondary">انصراف</a>
     </form>
+</div>
 {% endblock %}

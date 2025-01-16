@@ -1,5 +1,6 @@
 from datetime import timezone
 
+from django.conf import settings
 from django.db import models
 
 # Create your models here.
@@ -31,8 +32,9 @@ class Item(models.Model):
     address = models.TextField()
     collateral_required = models.BooleanField(default=False)
     collateral_types = models.ManyToManyField('Collateral', blank=True)
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='items', null=True, blank=True , default=1)  # تغییر به null=True
-
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='items', null=True, blank=True , default=1)  # تغییر به null=True
+    latitude = models.FloatField(null=True, blank=True)  # عرض جغرافیایی
+    longitude = models.FloatField(null=True, blank=True)  # طول جغرافیایی
 
     def __str__(self):
         return self.title
