@@ -1,6 +1,10 @@
 {% extends '_base.html' %}
-
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'detail-product/detail-product.css' %}">
+{% endblock %}
 {% block body %}
+
     <div class="container mt-5">
         <div class="row">
         <h1>{{ item.title }}</h1>
