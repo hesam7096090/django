@@ -35,7 +35,7 @@ class Item(models.Model):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='items', null=True, blank=True , default=1)  # تغییر به null=True
     latitude = models.FloatField(null=True, blank=True)  # عرض جغرافیایی
     longitude = models.FloatField(null=True, blank=True)  # طول جغرافیایی
-
+    save_item = models.ManyToManyField(settings.AUTH_USER_MODEL, null=True, blank=True , related_name='save_product')
     def __str__(self):
         return self.title
 

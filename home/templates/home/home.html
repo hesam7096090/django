@@ -1,7 +1,6 @@
 {% extends '_base.html' %}
 {% load static %}
 {% block css %}
-    <link href="https://fonts.googleapis.com/css?family=Poppins:400,800" rel="stylesheet"/>
     <link rel="stylesheet" href="{% static 'home/home/home.css' %}">
     <link href="{% static 'home/searchbar/searchbar.css' %}" rel="stylesheet"/>
 {% endblock %}
@@ -15,7 +14,7 @@
         <div class="container-fluid">
             <h1 class="display-4 mb-3">به سایت اجاره چی خوش آمدید</h1>
             <br>
-            <h2 class="">اینجا میتونید <strong class="text-warning">   همه چی</strong> رو اجاره بدین یا اجاره کنید</h2>
+            <h2 class="">اینجا میتونید <strong class="text-warning"> همه چی</strong> رو اجاره بدین یا اجاره کنید</h2>
         </div>
     </header>
 
@@ -25,7 +24,7 @@
 
 
     <div class="s006">
-        <form method="get" action="{% url 'home:search_results' %}" >
+        <form method="get" action="{% url 'home:search_results' %}">
             <fieldset>
                 <legend class=""> دنبال چی میگردین؟</legend>
                 <div class="inner-form">
@@ -36,6 +35,7 @@
                             </svg>
                         </button>
                         <input name="q" id="search" class="searchinp" type="text" placeholder=""/>
+
                     </div>
                 </div>
 
@@ -44,7 +44,11 @@
     </div>
 
 
-
+    <div class="container mt-5">
+        <div class="row">
+            <h2 class="text-center text-white ">دسته بندی های محبوب</h2>
+        </div>
+    </div>
 
 
 

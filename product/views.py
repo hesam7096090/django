@@ -1,8 +1,9 @@
 # Create your views here.
-from django.shortcuts import render
+from itertools import product
+
+from django.shortcuts import render , redirect
 from ad_item.models import *
 from django.core.paginator import Paginator
-
 
 def product_list(request):
     category_id = request.GET.get('category')
@@ -12,11 +13,15 @@ def product_list(request):
         items = Item.objects.filter(category_id=category_id)
     else:
         items = Item.objects.all()
+
     paginator = Paginator(items, 3)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
+    # is_save = False
+    # if items.save_item.filter(id=request.user.id).exists():
+    #     is_save = True
     return render(request, 'product/products.html',
-                  {'items': page_obj, 'categories': categories, 'selected_category': category_id})
+                  {'items': page_obj, 'categories': categories, 'selected_category': category_id , })
 
 
 from django.shortcuts import render, get_object_or_404
@@ -61,3 +66,12 @@ def product_detail(request, id):
         'error_message': error_message,
         'collateral_type': collateral_type,
     })
+
+def saved_items(request , id) :
+    url = request.META.get('HTTP_REFERER')
+    item = Item.objects.get(id=id)
+    if item.save_item.filter(id= request.user.id).exists() :
+        item.favorite.remove(request.user)
+    else :
+        item.save_item.add(request.user)
+    return redirect(url)

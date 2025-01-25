@@ -74,4 +74,6 @@ def change_password(request):
 
 
 def saved(request):
+    # item = request.user.save_product.all()
+    # return render(request, 'accounts/saved.html', {'item': item} )
     pass

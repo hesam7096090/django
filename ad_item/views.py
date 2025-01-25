@@ -9,19 +9,15 @@ def add_item(request):
     if request.method == 'POST':
         form = ItemForm(request.POST, request.FILES)
         if form.is_valid():
-            # ذخیره محصول بدون ثبت نهایی
             product = form.save(commit=False)
 
-            # افزودن اطلاعات کاربر و موقعیت مکانی
             product.owner = request.user
             product.latitude = request.POST.get('latitude')
             product.longitude = request.POST.get('longitude')
 
-            # ذخیره محصول
             product.save()
-            form.save_m2m()  # ذخیره روابط ManyToMany
+            form.save_m2m()
 
-            # ذخیره تصاویر
             images = request.FILES.getlist('images')
             for image in images:
                 ProductImage.objects.create(product=product, image=image)
@@ -30,7 +26,6 @@ def add_item(request):
     else:
         form = ItemForm()
 
-    # ارسال اطلاعات وثیقه‌ها برای استفاده در قالب
     collaterals = Collateral.objects.all()
     return render(
         request,

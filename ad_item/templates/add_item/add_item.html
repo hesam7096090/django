@@ -1,7 +1,7 @@
 {% extends '_base.html' %}
 {% load static %}
 {% block css %}
-    <link rel="stylesheet" href="{% static 'ad-item/additem1.css' %}">
+    <link rel="stylesheet" href="{% static 'ad-item/additem3.css' %}">
 {% endblock %}
 {% block body %}
     <style>
@@ -21,7 +21,7 @@
                     </button>
                 </li>
                 <li class="nav-item">
-                    <button class="nav-link" id="images-tab" data-bs-toggle="tab" data-bs-target="#images2"
+                    <button class="nav-link " id="images-tab" data-bs-toggle="tab" data-bs-target="#images2"
                             type="button"
                             role="tab" aria-controls="images" aria-selected="false">
                         تصاویر
@@ -91,7 +91,6 @@
                         <label for="province">استان:</label>
                         <select id="province" name="province" class="form-control">
                             <option value="">لطفاً استان را انتخاب کنید</option>
-                            <!-- استان‌ها به‌صورت پویا بارگذاری می‌شوند -->
                         </select>
                     </div>
 
@@ -99,7 +98,6 @@
                         <label for="city">شهر:</label>
                         <select id="city" name="city" class="form-control" disabled>
                             <option value="">لطفاً ابتدا استان را انتخاب کنید</option>
-                            <!-- شهرها به‌صورت پویا بارگذاری می‌شوند -->
                         </select>
                     </div>
                     <div class="form-group mb-3">
