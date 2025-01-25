@@ -73,7 +73,9 @@ def change_password(request):
     return render(request, 'accounts/change.html', {'form': form})
 
 
-def saved(request):
-    # item = request.user.save_product.all()
-    # return render(request, 'accounts/saved.html', {'item': item} )
-    pass
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def saved_items_list(request):
+    saved_items = request.user.save_product.all()
+    return render(request, 'accounts/saved.html', {'items': saved_items})

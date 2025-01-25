@@ -1,7 +1,30 @@
 {% extends '_base.html' %}
-{% block title %}
-	ذخیره شده ها
-{% endblock %}
 {% block body %}
-    <p>{{ item.name }}</p>
+<h2>آیتم‌های ذخیره‌شده</h2>
+<div class="container mt-4">
+    <div class="row">
+        {% for item in items %}
+            <div class="col-12 col-md-6 col-lg-4 items mb-4">
+                <div class="card">
+                    {% if item.images.first %}
+                        <img src="{{ item.images.first.image.url }}" class="card-img-top" alt="{{ item.title }}"
+                             style="max-height: 200px; object-fit: cover;">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ item.title }}</h5>
+                        <p class="card-text text-muted">{{ item.description|truncatewords:15 }}</p>
+                        <a href="{% url 'product:product_detail' item.id %}" class="btn btn-primary">جزئیات</a>
+                        <a href="{% url 'product:saved_products' item.id %}" class="btn btn-outline-danger">
+                            حذف از ذخیره‌ها
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="alert alert-warning text-center">
+                هنوز هیچ آیتمی ذخیره نشده است.
+            </div>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}

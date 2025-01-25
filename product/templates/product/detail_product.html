@@ -49,19 +49,8 @@
                 </ul>
 
                 <form id="rental-form">
-                    <div class="form-group">
-                        <label for="start_date">تاریخ شروع</label>
-                        <input type="date" id="start_date" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="end_date">تاریخ پایان</label>
-                        <input type="date" id="end_date" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="quantity">تعداد</label>
-                        <input type="number" id="quantity" class="form-control" value="1" min="1"
-                               max="{{ item.quantity_available }}" required>
-                    </div>
+                    {% csrf_token %}
+                  {{ form.as_p }}
 
                     <div id="total-price">
                         <p><strong>قیمت کل: </strong><span id="calculated-price">0</span> تومان</p>
